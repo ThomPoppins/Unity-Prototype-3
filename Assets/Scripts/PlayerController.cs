@@ -30,7 +30,9 @@ public class PlayerController : MonoBehaviour
         // When the spacebar is pressed, the player should jump
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
+            // Apply an upward force to the Rigidbody
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            // The player is no longer on the ground
             isOnGround = false;
         }
     }
@@ -40,12 +42,13 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
+            // When the player collides with the ground, isOnGround should be set to true
             isOnGround = true;
         } else if (collision.gameObject.CompareTag("Obstacle"))
         {
+            // When the player collides with an obstacle, the game should be over
             Debug.Log("Game Over!");
             gameOver = true;
         }
     }
 }
-
