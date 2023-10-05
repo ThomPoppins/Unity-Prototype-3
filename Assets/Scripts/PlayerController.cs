@@ -8,8 +8,10 @@ public class PlayerController : MonoBehaviour
     private Rigidbody playerRb;
     // Player animation
     private Animator playerAnim;
-    // Explosn particle effect
+    // Explosion particle effect
     public ParticleSystem explosionParticle;
+    // Particle effect for dirt
+    public ParticleSystem dirtParticle;
     // Declare a public float variable named 'jumpForce' and set it to 10
     public float jumpForce = 10;
     // Declare a public float variable named 'gravityModifier' and set it to 1
@@ -34,7 +36,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // When the spacebar is pressed, the player should jump when it's on the ground and the game is not over
+        // When the space bar is pressed, the player should jump when it's on the ground and the game is not over
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround && !gameOver)
         {
             // Apply an upward force to the Rigidbody
@@ -43,6 +45,8 @@ public class PlayerController : MonoBehaviour
             isOnGround = false;
             // Set the animation trigger for jumping
             playerAnim.SetTrigger("Jump_trig");
+            // Stop the dirt particle effect
+            dirtParticle.Stop();
         }
     }
 
@@ -53,6 +57,8 @@ public class PlayerController : MonoBehaviour
         {
             // When the player collides with the ground, isOnGround should be set to true
             isOnGround = true;
+            // Play the dirt particle effect
+            dirtParticle.Play();
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
@@ -66,6 +72,8 @@ public class PlayerController : MonoBehaviour
 
             // Play the explosion particle effect
             explosionParticle.Play();
+            // Stop the dirt particle effect
+            dirtParticle.Stop();
         }
     }
 }
