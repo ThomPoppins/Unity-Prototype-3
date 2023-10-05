@@ -55,6 +55,9 @@ public class PlayerController : MonoBehaviour
             // When the player collides with an obstacle, the game should be over
             Debug.Log("Game Over!");
             gameOver = true;
+            // Animate the player dying
+            playerAnim.SetBool("Death_b", true);
+            playerAnim.SetInteger("DeathType_int", 1);
         }
     }
 }
