@@ -6,6 +6,10 @@ public class PlayerController : MonoBehaviour
 {
     // Declare a private Rigidbody variable named 'playerRb'
     private Rigidbody playerRb;
+    // Player animation
+    private Animator playerAnim;
+    // Explosn particle effect
+    public ParticleSystem explosionParticle;
     // Declare a public float variable named 'jumpForce' and set it to 10
     public float jumpForce = 10;
     // Declare a public float variable named 'gravityModifier' and set it to 1
@@ -14,8 +18,7 @@ public class PlayerController : MonoBehaviour
     public bool isOnGround = true;
     // Is game over?
     public bool gameOver = false;
-    // Player animation
-    private Animator playerAnim;
+
 
     // Start is called before the first frame update
     void Start()
@@ -50,14 +53,19 @@ public class PlayerController : MonoBehaviour
         {
             // When the player collides with the ground, isOnGround should be set to true
             isOnGround = true;
-        } else if (collision.gameObject.CompareTag("Obstacle"))
+        }
+        else if (collision.gameObject.CompareTag("Obstacle"))
         {
             // When the player collides with an obstacle, the game should be over
             Debug.Log("Game Over!");
             gameOver = true;
+
             // Animate the player dying
             playerAnim.SetBool("Death_b", true);
             playerAnim.SetInteger("DeathType_int", 1);
+
+            // Play the explosion particle effect
+            explosionParticle.Play();
         }
     }
 }
