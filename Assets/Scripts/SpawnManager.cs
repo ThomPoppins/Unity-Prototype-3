@@ -12,10 +12,14 @@ public class SpawnManager : MonoBehaviour
     private float startDelay = 2;
     // The delay between each spawn after the first spawn
     private float repeatDelay = 2;
+    // The PlayerController script
+    private PlayerController playerControllerScript;
 
     // Start is called before the first frame update
     void Start()
     {
+        // Connect with the PlayerController script
+        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
         // Call the SpawnObstacle function every `repeatDelay` seconds after `startDelay` seconds
         InvokeRepeating("SpawnObstacle", startDelay, repeatDelay);
     }
@@ -29,6 +33,9 @@ public class SpawnManager : MonoBehaviour
     // Spawn the obstacle prefab at the spawn position
     private void SpawnObstacle()
     {
-        Instantiate(obstaclePrefab, spawnPos, obstaclePrefab.transform.rotation);
+        if (playerControllerScript.gameOver == false)
+        {
+            Instantiate(obstaclePrefab, spawnPos, obstaclePrefab.transform.rotation);
+        }
     }
 }
