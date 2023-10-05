@@ -31,8 +31,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // When the spacebar is pressed, the player should jump
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
+        // When the spacebar is pressed, the player should jump when it's on the ground and the game is not over
+        if (Input.GetKeyDown(KeyCode.Space) && isOnGround && !gameOver)
         {
             // Apply an upward force to the Rigidbody
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
