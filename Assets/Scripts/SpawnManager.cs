@@ -4,17 +4,31 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    // The prefab to be spawned
     public GameObject obstaclePrefab;
+    // The position at which the prefab will be spawned
     private Vector3 spawnPos = new Vector3(25, 0, 0);
+    // The delay between each spawn
+    private float startDelay = 2;
+    // The delay between each spawn after the first spawn
+    private float repeatDelay = 2;
+
     // Start is called before the first frame update
     void Start()
     {
-        Instantiate(obstaclePrefab, spawnPos, obstaclePrefab.transform.rotation);
+        // Call the SpawnObstacle function every `repeatDelay` seconds after `startDelay` seconds
+        InvokeRepeating("SpawnObstacle", startDelay, repeatDelay);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    // Spawn the obstacle prefab at the spawn position
+    private void SpawnObstacle()
+    {
+        Instantiate(obstaclePrefab, spawnPos, obstaclePrefab.transform.rotation);
     }
 }
