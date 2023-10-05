@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 10;
     // Declare a public float variable named 'gravityModifier' and set it to 1
     public float gravityModifier = 1;
+    // Declare a public bool variable named 'isOnGround' and set it to true
+    public bool isOnGround = true;
 
     // Start is called before the first frame update
     void Start()
@@ -24,9 +26,20 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // When the spacebar is pressed, the player should jump
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isOnGround = false;
+        }
+    }
+
+    // When the player collides with the ground, isOnGround should be set to true
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isOnGround = true;
         }
     }
 }
+
