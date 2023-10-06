@@ -20,6 +20,12 @@ public class PlayerController : MonoBehaviour
     public bool isOnGround = true;
     // Is game over?
     public bool gameOver = false;
+    // Audio source
+    private AudioSource playerAudio;
+    // Sound for jumping
+    public AudioClip jumpSound;
+    // Sound for crashing
+    public AudioClip crashSound;
 
 
     // Start is called before the first frame update
@@ -31,6 +37,8 @@ public class PlayerController : MonoBehaviour
         Physics.gravity *= gravityModifier;
         // Connect with the Animator component
         playerAnim = GetComponent<Animator>();
+        // Connect with the AudioSource component
+        playerAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -47,6 +55,8 @@ public class PlayerController : MonoBehaviour
             playerAnim.SetTrigger("Jump_trig");
             // Stop the dirt particle effect
             dirtParticle.Stop();
+            // Play the jump sound
+            playerAudio.PlayOneShot(jumpSound, 1.0f);
         }
     }
 
@@ -74,6 +84,8 @@ public class PlayerController : MonoBehaviour
             explosionParticle.Play();
             // Stop the dirt particle effect
             dirtParticle.Stop();
+            // Play the crash sound
+            playerAudio.PlayOneShot(crashSound, 1.0f);
         }
     }
 }
