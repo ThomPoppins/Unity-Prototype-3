@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem dirtParticle;
     // Declare a public float variable named 'jumpForce' and set it to 10
     public float jumpForce = 10;
+    // Boolean variable to define if someone already double jumped
+    private bool doubleJumped = false;
     // Declare a public float variable named 'gravityModifier' and set it to 1
     public float gravityModifier = 1;
     // Declare a public bool variable named 'isOnGround' and set it to true
@@ -58,6 +60,19 @@ public class PlayerController : MonoBehaviour
             // Play the jump sound
             playerAudio.PlayOneShot(jumpSound, 1.0f);
         }
+        else if (Input.GetKeyDown(KeyCode.Space) && !isOnGround && !doubleJumped && !gameOver)
+        {
+            // Apply an upward force to the Rigidbody
+            playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            // The player has double jumped
+            doubleJumped = true;
+            // Set the animation trigger for jumping
+            playerAnim.SetTrigger("Jump_trig");
+            // Stop the dirt particle effect
+            dirtParticle.Stop();
+            // Play the jump sound
+            playerAudio.PlayOneShot(jumpSound, 1.0f);
+        }
     }
 
     // When the player collides with the ground, isOnGround should be set to true
@@ -69,6 +84,8 @@ public class PlayerController : MonoBehaviour
             isOnGround = true;
             // Play the dirt particle effect
             dirtParticle.Play();
+            // The player has not double jumped yet
+            doubleJumped = false;
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
