@@ -21,25 +21,44 @@ public class MoveLeft : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Stop moving the objects when the game is over
-        GameOver();
+        // Move as long as the game is not over
+        Move();
         // Destroy the obstacles when they reach the left bound
         DestroyObstacles();
+        // Boost player forwards when right arrow is pressed for 1.5 seconds
+        BoostPlayer();
     }
 
-    void GameOver()
+    void BoostPlayer()
     {
-        // Stop moving the object when the game is over
+        // Boost player forwards when right arrow is pressed
+        if (Input.GetKey(KeyCode.RightArrow) && playerControllerScript.gameOver == false)
+        {
+            // Set boost to true for bonus score
+            playerControllerScript.boost = true;
+            // Move the object to the left
+            transform.Translate(Vector3.left * Time.deltaTime * speed * 1.5f);
+        }
+        else
+        {
+            // Set boost to false for no bonus score
+            playerControllerScript.boost = false;
+        }
+    }
+
+    void Move()
+    {
+        // Move unless the game is over
         if (playerControllerScript.gameOver == false)
         {
-            // Move the object to the left
+            // Move the objects to the left
             transform.Translate(Vector3.left * Time.deltaTime * speed);
         }
     }
 
     void DestroyObstacles()
     {
-        // Destroy the object when it reaches the left bound
+        // Destroy the obstacle when it reaches the left bound
         if (transform.position.x < leftBound && gameObject.CompareTag("Obstacle"))
         {
             Destroy(gameObject);

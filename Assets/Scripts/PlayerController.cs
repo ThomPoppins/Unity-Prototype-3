@@ -8,10 +8,22 @@ public class PlayerController : MonoBehaviour
     private Rigidbody playerRb;
     // Player animation
     private Animator playerAnim;
+    // Audio source
+    private AudioSource playerAudio;
+    // Sound for jumping
+    public AudioClip jumpSound;
+    // Sound for crashing
+    public AudioClip crashSound;
+    // MoveLeft script
+    private MoveLeft moveLeftScript;
     // Explosion particle effect
     public ParticleSystem explosionParticle;
     // Particle effect for dirt
     public ParticleSystem dirtParticle;
+    // Player score
+    public float score = 0;
+    // Is the player boosted?
+    public bool boost = false;
     // Declare a public float variable named 'jumpForce' and set it to 10
     public float jumpForce = 10;
     // Boolean variable to define if someone already double jumped
@@ -22,12 +34,7 @@ public class PlayerController : MonoBehaviour
     public bool isOnGround = true;
     // Is game over?
     public bool gameOver = false;
-    // Audio source
-    private AudioSource playerAudio;
-    // Sound for jumping
-    public AudioClip jumpSound;
-    // Sound for crashing
-    public AudioClip crashSound;
+
 
 
     // Start is called before the first frame update
@@ -41,13 +48,17 @@ public class PlayerController : MonoBehaviour
         playerAnim = GetComponent<Animator>();
         // Connect with the AudioSource component
         playerAudio = GetComponent<AudioSource>();
+        // Get MoveLeft script
+        moveLeftScript = GameObject.Find("Player").GetComponent<MoveLeft>();
     }
 
     // Update is called once per frame
     void Update()
     {
         // Subscribe to space bar press event in the Jump method
-        Jump();        
+        Jump();
+
+        ScoreTracker();
     }
 
     private void Jump()
@@ -79,6 +90,26 @@ public class PlayerController : MonoBehaviour
             // Play the jump sound
             playerAudio.PlayOneShot(jumpSound, 1.0f);
         }
+    }
+
+    public void ScoreTracker()
+    {
+        // Score tracker
+        if (gameOver == false)
+        {
+            if (boost)
+            {
+                // Increase the score by 1 every second
+                score += Time.deltaTime * 0.01f * 4.0f;
+            }
+            else
+            {
+                // Increase the score by 1 every second
+                score += Time.deltaTime * 0.01f;
+            }
+        }
+        // Display score rounded to 2 decimal places
+        Debug.Log("Score: " + score.ToString("F2"));
     }
 
     // When the player collides with the ground, isOnGround should be set to true
