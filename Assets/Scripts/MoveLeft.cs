@@ -21,13 +21,24 @@ public class MoveLeft : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Stop moving the objects when the game is over
+        GameOver();
+        // Destroy the obstacles when they reach the left bound
+        DestroyObstacles();
+    }
+
+    void GameOver()
+    {
         // Stop moving the object when the game is over
         if (playerControllerScript.gameOver == false)
         {
             // Move the object to the left
             transform.Translate(Vector3.left * Time.deltaTime * speed);
         }
+    }
 
+    void DestroyObstacles()
+    {
         // Destroy the object when it reaches the left bound
         if (transform.position.x < leftBound && gameObject.CompareTag("Obstacle"))
         {

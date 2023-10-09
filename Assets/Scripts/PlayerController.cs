@@ -47,9 +47,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Subscribe to space bar press event in the Jump method
-        Jump();
-
-
+        Jump();        
     }
 
     private void Jump()
