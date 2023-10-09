@@ -34,7 +34,10 @@ public class PlayerController : MonoBehaviour
     public bool isOnGround = true;
     // Is game over?
     public bool gameOver = false;
-
+    // Starting point
+    public Transform startingPoint;
+    // Lerp speed
+    public float lerpSpeed;
 
 
     // Start is called before the first frame update
@@ -50,6 +53,9 @@ public class PlayerController : MonoBehaviour
         playerAudio = GetComponent<AudioSource>();
         // Get MoveLeft script
         moveLeftScript = GameObject.Find("Player").GetComponent<MoveLeft>();
+
+        gameOver = true;
+        StartCoroutine(PlayIntro());
     }
 
     // Update is called once per frame
@@ -58,8 +64,40 @@ public class PlayerController : MonoBehaviour
         // Subscribe to space bar press event in the Jump method
         Jump();
 
+        // Track the player's score
         ScoreTracker();
     }
+
+    IEnumerator PlayIntro()
+    {
+        // Player start position
+        Vector3 startPos = transform.position;
+        // Player end position
+        Vector3 endPos = startingPoint.position;
+        // Journey length
+        float journeyLength = Vector3.Distance(startPos, endPos);
+        // Start time
+        float startTime = Time.time;
+        // Distance covered
+        float distanceCovered = (Time.time - startTime) * lerpSpeed;
+        // The part the journey is at
+        float fractionOfJourney = distanceCovered / journeyLength;
+        // Set the animation trigger for running speed to 0.5
+        playerAnim.SetFloat("Speed_Multiplier", 0.5f);
+        // Move the player from the start position to the end position at a constant speed and 
+        while (fractionOfJourney < 1)
+        {
+            distanceCovered = (Time.time - startTime) * lerpSpeed;
+            fractionOfJourney = distanceCovered / journeyLength;
+            transform.position = Vector3.Lerp(startPos, endPos, fractionOfJourney);
+            yield return null;
+        }
+        // After the player has reached the end position, set the animation trigger for running speed to 1
+        playerAnim.SetFloat("Speed_Multiplier", 1.0f);
+        // Start moving left
+        gameOver = false;
+    }
+
 
     private void Jump()
     {

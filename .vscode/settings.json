@@ -52,5 +52,5 @@
     "Temp/": true
   },
   "dotnet.preferCSharpExtension": true,
-  "cSpell.words": ["Behaviour", "Rigidbody"]
+  "cSpell.words": ["Behaviour", "lerp", "Rigidbody"]
 }
