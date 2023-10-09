@@ -46,6 +46,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Subscribe to space bar press event in the Jump method
+        Jump();
+
+
+    }
+
+    private void Jump()
+    {
         // When the space bar is pressed, the player should jump when it's on the ground and the game is not over
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround && !gameOver)
         {
