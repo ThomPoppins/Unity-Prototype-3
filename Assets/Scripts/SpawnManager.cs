@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    // Array of obstacle prefabs
-    public GameObject[] obstaclePrefabs;
+    // The prefab to be spawned
+    public GameObject obstaclePrefab;
     // The position at which the prefab will be spawned
     private Vector3 spawnPos = new Vector3(25, 0, 0);
     // The delay between each spawn
@@ -27,7 +27,7 @@ public class SpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     // Spawn the obstacle prefab at the spawn position
@@ -35,10 +35,7 @@ public class SpawnManager : MonoBehaviour
     {
         if (playerControllerScript.gameOver == false)
         {
-            // Randomly generate the index of the obstacle prefab
-            int obstacleIndex = Random.Range(0, obstaclePrefabs.Length);
-            // Instantiate the obstacle prefab at the spawn position
-            Instantiate(obstaclePrefabs[obstacleIndex], spawnPos, obstaclePrefabs[obstacleIndex].transform.rotation);
+            Instantiate(obstaclePrefab, spawnPos, obstaclePrefab.transform.rotation);
         }
     }
 }
